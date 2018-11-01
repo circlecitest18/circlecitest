@@ -19,23 +19,80 @@ orbs:
             default: "2.5.3"
         steps:
         - run: |
-              curl http://central.maven.org/maven2/com/sonatype/nexus/nexus-platform-api/<< parameters.nexus-platform-api-version >>/nexus-platform-api-<< parameters.nexus-platform-api-version >>.jar -o nexus-platform-api.jar
-              curl https://dl.bintray.com/groovy/maven/apache-groovy-binary-<<parameters.groovy-version>>.zip -o apache-groovy-binary.zip
-              curl https://raw.githubusercontent.com/sonatype-nexus-community/circleci-nexus-orb/INT-1109_repository_groovy_wrapper/cli/src/main/groovy/NexusPublisher.groovy -o NexusPublisher.groovy
-              pwd
+              curl -L http://central.maven.org/maven2/com/sonatype/nexus/nexus-platform-api/<< parameters.nexus-platform-api-version >>/nexus-platform-api-<< parameters.nexus-platform-api-version >>.jar -o nexus-platform-api.jar
+              curl -L https://dl.bintray.com/groovy/maven/apache-groovy-binary-<<parameters.groovy-version>>.zip -o apache-groovy-binary.zip
+              curl -L https://raw.githubusercontent.com/sonatype-nexus-community/circleci-nexus-orb/INT-1109_repository_groovy_wrapper/cli/src/main/groovy/NexusPublisher.groovy -o NexusPublisher.groovy
+              unzip apache-groovy-binary.zip
+              mv groovy-<< parameters.groovy-version>> groovy
 
       archive:
+        description: "Archives artifacts to Nexus Repository Manager"
+        parameters:
+          publisher-parameters:
+            type: string
+            default: "--username admin --password admin123 --serverurl http://localhost:8081/ --filename /tmp/workspace/test1-1.0-SNAPSHOT.jar --format maven2 -CgroupId=com.example -CartifactId=myapp -Cversion=1.0 -Aextension=jar --repository maven-releases"
+
         steps:
-        - run: echo "Archive command will start here"
+        - attach_workspace:
+            at: /tmp/workspace
+        - run: |
+            pwd
+            ls -l
+            ls -l ~
+            ls -l /tmp/workspace
+            groovy/bin/groovy NexusPublisher.groovy << parameters.publisher-parameters >>
 
     jobs:
       nexusjob:
         executor: default
         steps:
         - install
+        - archive
 
 version: 2.1
+jobs: # a collection of steps
+  examplejob: # runs not using Workflows must have a `build` job as entry point
+
+    working_directory: ~/circleci-demo-java-spring # directory where steps will run
+
+    docker: # run the steps with Docker
+    - image: circleci/openjdk:8-jdk-browsers # ...with this image as the primary container; this is where all `steps` will run
+
+    steps: # a collection of executable commands
+
+    - checkout # check out source code to working directory
+
+    - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+        key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+
+    - run: mvn dependency:go-offline # gets the project dependencies
+
+    - save_cache: # saves the project dependencies
+        paths:
+        - ~/.m2
+        key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+
+    - run: mvn package # run the actual tests
+
+    - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
+        path: target/surefire-reports
+
+    - store_artifacts: # store the uberjar as an artifact
+        path: target/test1-1.0-SNAPSHOT.jar
+
+    # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+    - persist_to_workspace:
+        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        # taken to be the root directory of the workspace.
+        root: target
+        # Must be relative path from root
+        paths:
+          - test1-1.0-SNAPSHOT.jar
+
 workflows:
   main:
     jobs:
-    - my-orb/nexusjob
+      - examplejob
+      - my-orb/nexusjob:
+          requires:
+            - examplejob
