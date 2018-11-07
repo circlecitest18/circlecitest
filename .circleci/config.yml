@@ -32,16 +32,16 @@ jobs: # a collection of steps
     - store_artifacts: # store the uberjar as an artifact
         path: target/test1-1.0-SNAPSHOT.jar
 
-    # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-    - persist_to_workspace:
-        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-        # taken to be the root directory of the workspace.
-        root: target
-        # Must be relative path from root
-        paths:
-          - test1-1.0-SNAPSHOT.jar
+#    # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+#    - persist_to_workspace:
+#        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+#        # taken to be the root directory of the workspace.
+#        root: target
+#        # Must be relative path from root
+#        paths:
+#          - test1-1.0-SNAPSHOT.jar
 
-    - nexus-orb/install
+    - nexus-orb/install # install Sonatype Nexus Repository Manager client
 
     - nexus-orb/publish:
         filename: "target/test1-1.0-SNAPSHOT.jar"
@@ -50,9 +50,9 @@ jobs: # a collection of steps
         password: "admin123"
         serverurl: "http://ec2-34-244-179-39.eu-west-1.compute.amazonaws.com:8081/"
 
-workflows:
-  main:
-    jobs:
+#workflows:
+#  main:
+#    jobs:
       - examplejob
 #      - my-orb/nexusjob:
 #          requires:
