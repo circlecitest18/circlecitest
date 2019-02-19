@@ -47,8 +47,8 @@ jobs: # a collection of steps
         filename: "target/test1-1.0-SNAPSHOT.jar"
         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
         username: "admin"
-        password: "admin123"
-        serverurl: "http://ec2-34-244-179-39.eu-west-1.compute.amazonaws.com:8081/"
+        password: "QrqKVekWz6zAkSuf"
+        serverurl: "https://2pbo0s8gmw-nxrm.dev.depshield.sonatype.org/"
 
 #workflows:
 #  main:
