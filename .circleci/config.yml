@@ -1,5 +1,5 @@
 orbs:
-  nexus-orb: sonatype/nexus-platform-orb@1.0
+  nexus-orb: sonatype/nexus-platform-orb@INT-1376_update_circleci_orb_to_use_sonatype_docker_image
 
 version: 2.1
 jobs: # a collection of steps
