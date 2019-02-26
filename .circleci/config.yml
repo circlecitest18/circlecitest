@@ -47,7 +47,7 @@ jobs: # a collection of steps
 #     - nexus-orb/publish:
 #         filename: "target/test1-1.0-SNAPSHOT.jar"
 #         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
-#         username: "admin1"
+#         username: "admin"
 #         password: "admin123"
 #         serverurl: "https://2pbo0s8gmw-nxrm.dev.depshield.sonatype.org/"
 
