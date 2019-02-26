@@ -48,7 +48,7 @@ jobs: # a collection of steps
 #         filename: "target/test1-1.0-SNAPSHOT.jar"
 #         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
 #         username: "admin"
-#         password: "QrqKVekWz6zAkSuf"
+#         password: ""
 #         serverurl: "https://2pbo0s8gmw-nxrm.dev.depshield.sonatype.org/"
 
 
