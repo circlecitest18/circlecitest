@@ -42,7 +42,7 @@ jobs: # a collection of steps
         paths:
           - test1-1.0-SNAPSHOT.jar
 
-     - nexus-orb/install # install Sonatype Nexus Repository Manager client
+    - nexus-orb/install # install Sonatype Nexus Repository Manager client
 
     - nexus-orb/publish:
         workspace: "target"
