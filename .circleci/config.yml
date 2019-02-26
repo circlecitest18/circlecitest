@@ -1,9 +1,10 @@
 orbs:
-  nexus-orb: sonatype/nexus-platform-orb@INT-1376_update_circleci_orb_to_use_sonatype_docker_image
+  nexus-orb: orbtest/circleci-nexus-orb@dev:INT-1376
 
 version: 2.1
+
 jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
+  maven-package: # runs not using Workflows must have a `build` job as entry point
 
     working_directory: ~/circleci-demo-java-spring # directory where steps will run
 
@@ -33,27 +34,30 @@ jobs: # a collection of steps
         path: target/test1-1.0-SNAPSHOT.jar
 
 #    # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
-#    - persist_to_workspace:
-#        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-#        # taken to be the root directory of the workspace.
-#        root: target
-#        # Must be relative path from root
-#        paths:
-#          - test1-1.0-SNAPSHOT.jar
+    - persist_to_workspace:
+        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+        # taken to be the root directory of the workspace.
+        root: target
+        # Must be relative path from root
+        paths:
+          - test1-1.0-SNAPSHOT.jar
 
-    - nexus-orb/install # install Sonatype Nexus Repository Manager client
+#     - nexus-orb/install # install Sonatype Nexus Repository Manager client
 
-    - nexus-orb/publish:
-        filename: "target/test1-1.0-SNAPSHOT.jar"
-        attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
-        username: "admin"
-        password: "QrqKVekWz6zAkSuf"
-        serverurl: "https://2pbo0s8gmw-nxrm.dev.depshield.sonatype.org/"
+#     - nexus-orb/publish:
+#         filename: "target/test1-1.0-SNAPSHOT.jar"
+#         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
+#         username: "admin"
+#         password: "QrqKVekWz6zAkSuf"
+#         serverurl: "https://2pbo0s8gmw-nxrm.dev.depshield.sonatype.org/"
 
-#workflows:
-#  main:
-#    jobs:
-#      - examplejob
-#      - my-orb/nexusjob:
-#          requires:
-#            - examplejob
+
+workflows:
+  main:
+    jobs:
+      - nexus-orb/nexusjob
+          filename: "target/test1-1.0-SNAPSHOT.jar"
+          attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
+          username: "admin"
+          password: "QrqKVekWz6zAkSuf"
+          serverurl: "https://2pbo0s8gmw-nxrm.dev.depshield.sonatype.org/"
