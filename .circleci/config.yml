@@ -49,7 +49,6 @@ jobs: # a collection of steps
         filename: "test1-1.0-SNAPSHOT.jar"
         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
 
-
 # workflows:
 #   main:
 #     jobs:
