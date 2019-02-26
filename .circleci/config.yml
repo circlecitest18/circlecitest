@@ -56,7 +56,7 @@ workflows:
   main:
     jobs:
       - maven-package
-      - nexus-orb/nexusjob
+      - nexus-orb/nexusjob:
           requires:
             - maven-package
           context: circlecitest
