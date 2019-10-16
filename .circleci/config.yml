@@ -43,12 +43,12 @@ jobs: # a collection of steps
         paths:
           - test1-1.0-SNAPSHOT.jar
 
-     - nexus-orb/install # install Sonatype Nexus Repository Manager client. Only required when groovy not already available.
+    - nexus-orb/install # install Sonatype Nexus Repository Manager client. Only required when groovy not already available.
 
-     - nexus-orb/publish:
-         workspace: "target"
-         filename: "test1-1.0-SNAPSHOT.jar"
-         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
+    - nexus-orb/publish:
+        workspace: "target"
+        filename: "test1-1.0-SNAPSHOT.jar"
+        attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
 
 # workflows:
 #  main:
