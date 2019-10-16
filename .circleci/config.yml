@@ -48,7 +48,7 @@ jobs: # a collection of steps
     - nexus-orb/publish:
         workspace: "target"
         filename: "test1-1.0-SNAPSHOT.jar"
-        attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
+        attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4-SNAPSHOT -Aextension=jar"
         repository: maven-snapshots
 
 # workflows:
