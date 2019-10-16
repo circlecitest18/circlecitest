@@ -49,6 +49,7 @@ jobs: # a collection of steps
         workspace: "target"
         filename: "test1-1.0-SNAPSHOT.jar"
         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=1.4 -Aextension=jar"
+        repository: maven-snapshots
 
 # workflows:
 #  main:
@@ -57,4 +58,5 @@ jobs: # a collection of steps
 #      - nexus-orb/nexusjob:
 #          requires:
 #            - build
-#          context: circlecitest 
+#          # for testing it's better to disable the context and use environment vars because non-workflow jobs can't use contexts
+#          context: circlecitest  
