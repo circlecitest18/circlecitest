@@ -80,7 +80,7 @@ workflows:
      - deploy:
          requires:
            - build
-     - nexus-orb/publish:
+     - nexus-orb/nexusjob:
          attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=4.${CIRCLE_BUILD_NUM} -Aextension=jar"
          # context can be specified here
          # context: circlecitest  
