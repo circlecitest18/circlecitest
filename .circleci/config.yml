@@ -1,5 +1,5 @@
 orbs:
-  nexus-orb: orbtest/circleci-nexus-orb@dev:INT-2218-1345
+  nexus-orb: orbtest/circleci-nexus-orb@dev:INT-2218-141-
 
 
 version: 2.1
