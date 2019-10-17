@@ -34,6 +34,9 @@ jobs: # a collection of steps
     - store_artifacts: # store the uberjar as an artifact
         path: target/test1-1.0-SNAPSHOT.jar
         
+    ### test running the (groovy) install script. we are running on a standard image now so installation required.
+    - nexus-orb/install # install Sonatype Nexus Repository Manager client. Only required when groovy not already available.
+        
     #### test publishing directly from the filesystem
     - nexus-orb/publish:
         filename: "target/test1-1.0-SNAPSHOT.jar"
@@ -53,14 +56,12 @@ jobs: # a collection of steps
         workspace: "target"
         filename: "test1-1.0-SNAPSHOT.jar"
         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=2.${CIRCLE_BUILD_NUM} -Aextension=jar"
-        
-    ### test running the (groovy) install script. It has not required here because our docker image already has groovy
-    - nexus-orb/install # install Sonatype Nexus Repository Manager client. Only required when groovy not already available.
-    
+            
   deploy:
     docker:
     - image: sonatype/nexus-platform-cli:0.0.20190221-200155.19a5dd0
     steps:
+    # we are using nexus-platform-cli image so install step not required
     - nexus-orb/publish:
         # username: 
         # password: 
