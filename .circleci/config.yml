@@ -1,5 +1,5 @@
 orbs:
-  nexus-orb: orbtest/circleci-nexus-orb@dev:INT-2218
+  nexus-orb: orbtest/circleci-nexus-orb@dev:INT-2218-1239
 
 
 version: 2.1
@@ -80,5 +80,7 @@ workflows:
      - deploy:
          requires:
            - build
+     - nexusorb/publish:
+         attributes: "-CgroupId=com.example -CartifactId=myapp -Cversion=4.${CIRCLE_BUILD_NUM} -Aextension=jar"
          # context can be specified here
          # context: circlecitest  
